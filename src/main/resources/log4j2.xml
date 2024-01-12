@@ -2,6 +2,8 @@
 <Configuration status="WARN">
     <Properties>
         <Property name="logDirectory">${bundle:config:log.directory}</Property>
+        <Property name="logDirectory1">${bundle:config:log.directory1}</Property>
+        <Property name="logDirectory2">${bundle:config:log.directory2}</Property>
     </Properties>
     <Appenders>
 
@@ -25,7 +27,23 @@
                 </Policies>
                 <DefaultRolloverStrategy max="10"/>
             </RollingFile>
+        <RollingFile name="App1File" fileName="${logDirectory1}/app.log"
+                     filePattern="${logDirectory1}/app_%d{yyyyMMdd_HH_mm_ss_}%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="0.1 MB"/>
+            </Policies>
+        </RollingFile>
 
+        <RollingFile name="App2File" fileName="${logDirectory2}/app.log"
+                     filePattern="${logDirectory2}/app_%d{yyyyMMdd_HH_mm_ss_}%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="0.1 MB"/>
+            </Policies>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="debug">
@@ -34,6 +52,14 @@
             <AppenderRef ref="RollingFile"/>
 
         </Root>
+        <Logger name="FileLogger1" level="info" additivity="false">
+            <AppenderRef ref="App1File"/>
+        </Logger>
+
+        <!-- Application 2 File Appender -->
+        <Logger name="FileLogger2" level="info" additivity="false">
+            <AppenderRef ref="App2File"/>
+        </Logger>
     </Loggers>
 </Configuration>
 
